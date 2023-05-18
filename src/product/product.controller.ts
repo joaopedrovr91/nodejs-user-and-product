@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateProductDTO } from './dto/CreateProduct.dto';
 import { ProductRepository } from './product.repository';
-import { randomUUID } from 'crypto';
+import { v4 as uuid } from 'uuid';
 import { UpdateProductDTO } from './dto/UpdateProduct.dto';
 import { ProductEntity } from './entity/product.entity';
 
@@ -20,6 +20,7 @@ export class ProductController {
   @Post()
   async createProduct(@Body() dataProduct: CreateProductDTO) {
     const product = dataProduct as ProductEntity;
+    product.id = uuid();
 
     const productRegistered = this.productRepository.save(product);
     return productRegistered;

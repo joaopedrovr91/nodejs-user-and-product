@@ -19,14 +19,12 @@ export class UsuarioController {
   constructor(private usuarioRepository: UsuarioRepository) {}
   @Post()
   async criaUsuario(@Body() dadosDoUsuario: CriaUsuarioDTO) {
-    const usuarioEntity = new UsuarioEntity();
-    usuarioEntity.email = dadosDoUsuario.email;
-    usuarioEntity.senha = dadosDoUsuario.senha;
-    usuarioEntity.nome = dadosDoUsuario.nome;
-    usuarioEntity.id = uuid();
-    this.usuarioRepository.salvar(usuarioEntity);
+    const user = dadosDoUsuario as UsuarioEntity;
+    user.id = uuid();
+
+    this.usuarioRepository.salvar(user);
     return {
-      usuario: new ListaUsuarioDTO(usuarioEntity.id, usuarioEntity.nome),
+      usuario: new ListaUsuarioDTO(user.id, user.nome),
       menssagem: 'usuário criado com sucesso',
     };
   }
